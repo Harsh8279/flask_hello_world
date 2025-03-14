@@ -9,7 +9,13 @@ def hello_world():
 
 @app.route("/user/<username>")
 def hello_user(username):
-    return f"<h1>Hello, {username}! Flask this side.</h1>"
+    return render_template("greetings.html",
+                           title="Greetings",
+                           **{
+                                 "username": username,
+                                 "framework": "Flask"
+                           }
+                           )
 
 if __name__ ==  "__main__":
     app.run(debug=True)
