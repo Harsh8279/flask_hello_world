@@ -1,5 +1,5 @@
-from flask_classful import FlaskView
-from flask import render_template, jsonify
+from flask_classful import FlaskView, route
+from flask import render_template, jsonify, request
 from forms import UserForm
 
 class UserView(FlaskView):
@@ -55,9 +55,17 @@ class UserView(FlaskView):
             },  
         ]
         
-
+    @route("/", methods=["GET", "POST"])
     def index(self):
         user_form = UserForm()
+
+        if request.method == "POST" and user_form.validate_on_submit():
+            self.users_data.append({
+                "username": user_form.username.data,
+                "email": user_form.email.data,
+                "is_active": True
+            })
+
         return render_template("user_index.html",**{"users": self.users_data, "form": user_form})
     
     def get(self, username):
@@ -67,12 +75,12 @@ class UserView(FlaskView):
         
         return jsonify({"error": "User not found"}), 404
     
-    def post(self):
-        user_form = UserForm()
-        if user_form.validate_on_submit():
-            self.users_data.append({
-                "username": user_form.username.data,
-                "email": user_form.email.data,
-                "is_active": True
-            })
-            return render_template("user_index.html", **{"users": self.users_data, "form": user_form})
+    # def post(self):
+    #     user_form = UserForm()
+    #     if user_form.validate_on_submit():
+    #         self.users_data.append({
+    #             "username": user_form.username.data,
+    #             "email": user_form.email.data,
+    #             "is_active": True
+    #         })
+    #         return render_template("user_index.html", **{"users": self.users_data, "form": user_form})
