@@ -1,6 +1,9 @@
 from flask import Flask, render_template
+from views import UserView
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'your-secure-secret-key-here'    # when you work with forms, you need to set a secret key
 
 @app.route("/")
 def hello_world():
@@ -16,6 +19,8 @@ def hello_user(username):
                                  "framework": "Flask"
                            }
                            )
+
+UserView.register(app)
 
 if __name__ ==  "__main__":
     app.run(debug=True)

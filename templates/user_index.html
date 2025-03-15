@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Detail View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user["is_active"]  %}
+                    <tr>
+                        <td>{{user["username"]}}</td>
+                        <td>{{user["email"]}}</td>
+                        <td><a href="/users/{{user['username']}}">View</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+    <h1>Add New User</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control") }}
+        <br>
+        <br>
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+        <br>
+        <br>
+        {{ form.submit(class="btn") }}
+
+
+    </form>
+
+</body>
+</html>
